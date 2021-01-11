@@ -36,5 +36,14 @@ namespace example_db.Controllers
             await _db.SaveChangesAsync();
             return new JsonResult(true);
         }
+        
+        [HttpPut]
+        [Route("EditUser")]
+        public async Task<IActionResult> EditUser(User user)
+        {
+            _db.Entry(user).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return new JsonResult(true);
+        }
     }
 }
