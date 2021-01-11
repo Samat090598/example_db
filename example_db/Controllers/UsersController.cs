@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using example_db.Models;
 using example_db.Models.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +20,20 @@ namespace example_db.Controllers
 
         [HttpPost]
         [Route("AddUser")]
-        public IActionResult AddUser(User user)
+        public async Task<IActionResult> AddUser(User user)
         {
             _db.Entry(user).State = EntityState.Added;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
+            return new JsonResult(true);
+        }
+
+        [HttpDelete]
+        [Route("DeleteUser")]
+        public async Task<IActionResult> DeleteUser([FromQuery] Guid id)
+        {
+            User user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            _db.Entry(user).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
             return new JsonResult(true);
         }
     }
