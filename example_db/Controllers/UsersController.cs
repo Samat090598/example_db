@@ -45,5 +45,13 @@ namespace example_db.Controllers
             await _db.SaveChangesAsync();
             return new JsonResult(true);
         }
+
+        [HttpGet]
+        [Route("GetUser")]
+        public async Task<IActionResult> GetUser(Guid id)
+        {
+            User user = await _db.Users.FirstOrDefaultAsync(f => f.Id == id);
+            return new JsonResult(user);
+        } 
     }
 }
