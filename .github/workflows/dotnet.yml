@@ -1,0 +1,31 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update Project
+        uses: garygrossgarten/github-action-ssh@release
+        with: 
+          command : |
+            cd /var/www/example_db/example_db
+            git pull origin master
+            dotnet ef database update
+            rm -R bin
+            rm -R obj
+            docker build -t aspnetapp .
+            docker rm $(docker ps -a -q)
+            docker run -d --restart always -p 80:80 aspnetapp
+          privateKey: ${{ secrets.SERVER_SSH_KEY }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+            
+             
