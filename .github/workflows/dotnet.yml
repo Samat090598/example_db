@@ -21,6 +21,7 @@ jobs:
             dotnet ef database update
             rm -R bin
             rm -R obj
+            dotnet publish -c Release
             docker build -t aspnetapp .
             docker rm $(docker ps -a -q)
             docker run -d --restart always -p 80:80 aspnetapp
