@@ -19,8 +19,6 @@ jobs:
             cd /var/www/example_db/example_db
             git pull origin master
             dotnet ef database update
-            rm -R bin
-            rm -R obj
             dotnet publish -c Release
             docker build -t aspnetapp .
             docker rm $(docker ps -a -q)
