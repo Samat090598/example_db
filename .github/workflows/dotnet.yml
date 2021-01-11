@@ -21,7 +21,7 @@ jobs:
             dotnet ef database update
             dotnet publish -c Release
             docker build -t aspnetapp .
-            docker stop -v example_db
+            docker stop example_db
             docker rm -v example_db
             docker run --name example_db -d --restart always -p 80:80 aspnetapp
           privateKey: ${{ secrets.SERVER_SSH_KEY }}
